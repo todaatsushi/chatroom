@@ -1,10 +1,23 @@
 ### FUNCTIONAL TESTS
-from django.test import LiveServerTestCawse
+from django.test import LiveServerTestCase
 
 from selenium.webdriver.firefox.webdriver import WebDriver
 
 
-class NewVisitorTest(TestCase):
+class ApiTestCase(LiveServerTestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        self.setUpClass()
+        cls.selenium = WebDriver()
+
+    @classmethod
+    def tearDownClass()(cls):
+        cls.selenium.quit()
+        super().tearDownClass()
+
+
+class NewVisitorTestCase(LiveServerTestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -36,3 +49,16 @@ class NewVisitorTest(TestCase):
         # User posts in the room
         # User sees post
         pass
+
+
+class ReturningUserTestCase(LiveServerTestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        self.setUpClass()
+        cls.selenium = WebDriver()
+
+    @classmethod
+    def tearDownClass()(cls):
+        cls.selenium.quit()
+        super().tearDownClass()
