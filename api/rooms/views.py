@@ -14,7 +14,7 @@ class ChatroomViewSet(viewsets.ViewSet):
             - list, retrieve
         - POST
             - create
-        - PUT
+        - PATCH
             - update, partial_update
         - DESTROY
             - destroy
@@ -43,7 +43,7 @@ class ChatroomViewSet(viewsets.ViewSet):
         )
 
     # PUT / PATCH
-    def update(self, request, pk=None):
+    def partial_update(self, request, pk=None):
         room = get_object_or_404(Chatroom, pk=pk)
 
         if 'name' in request.data:
@@ -60,29 +60,9 @@ class ChatroomViewSet(viewsets.ViewSet):
     def destroy(self, request, pk=None):
         room = get_object_or_404(Chatroom, pk=pk)
         room.delete()
-        serializer = ChatroomSerializer(Chatroom.objects.all())
+
+        rooms = Chatroom.objects.all()
+        serializer = ChatroomSerializer(rooms, many=True)
         return Response(serializer.data)
 
 
-class MessageViewSet(viewsets.ViewSet):
-    """
-
-    """
-
-    def list(self, request):
-        pass
-
-    def create(self, request):
-        pass
-
-    def retrieve(self, request, pk=None):
-        pass
-
-    def update(self, request, pk=None):
-        pass
-
-    def partial_update(self, request, pk=None):
-        pass
-
-    def destroy(self, request, pk=None):
-        pass

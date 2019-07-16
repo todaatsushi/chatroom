@@ -13,4 +13,8 @@ router.register(
     basename='chatroom'
 )
 
-urlpatterns = router.urls
+urlpatterns = [
+    # path('<str:pk>/<int:pk>/' ),
+]
+
+urlpatterns += router.urls
