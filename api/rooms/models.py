@@ -2,10 +2,18 @@ from django.db import models
 from django.utils import timezone
 
 
-# Room model
+def _generate_hash():
+    import uuid
+    return uuid.uuid4().hex
+
+
 class Chatroom(models.Model):
+    hash = models.UUIDField(
+        primary_key=True,
+        default=_generate_hash,
+        editable=False
+    )
     name = models.CharField(max_length=50)
-    hash = models.CharField(max_length=10, unique=True)
     created_at = models.DateTimeField(default=timezone.now)
     last_posted = models.DateTimeField(null=True)
 
@@ -14,6 +22,7 @@ class Chatroom(models.Model):
 
     def get_messages(self):
         return self.messages.objects.order_by('-posted_at')
+
 
 class Message(models.Model):
     chatroom = models.ForeignKey('rooms.Chatroom', on_delete=models.CASCADE, related_name='messages')
