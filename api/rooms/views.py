@@ -1,7 +1,9 @@
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
 
 from rest_framework import permissions, viewsets
 from rest_framework.response import Response
+from rest_framework.decorators import api_view
 
 from rooms.models import Chatroom, Message, _generate_hash
 from rooms.serializers import ChatroomSerializer, MessageSerializer
@@ -66,3 +68,31 @@ class ChatroomViewSet(viewsets.ViewSet):
         return Response(serializer.data)
 
 
+## MESSAGE VIEWS
+@api_view(['GET', 'POST'])
+def ListCreateMessages(request, pkr):
+    # Get relevant room
+    room = get_object_or_404(Chatroom, pk=pkr)
+    
+    if request.method == 'GET':
+        messages = Message.objects.filter(chatroom=room)
+        serializer = MessageSerializer(messages, many=True)
+        return Response(serializer.data)
+    
+    if request.method == 'POST':
+        author = request.data['author']
+        message = request.data['message']
+        message = Message(
+            chatroom=room,
+            author=author,
+            message=message
+        )
+
+        message.save()
+
+        # Update last_posted at on room
+        room.last_posted = timezone.now()
+        room.save()
+
+        serializer = MessageSerializer(message)
+        return Response(serializer.data)

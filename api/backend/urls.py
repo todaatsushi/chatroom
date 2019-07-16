@@ -14,7 +14,11 @@ router.register(
 )
 
 urlpatterns = [
-    # path('<str:pk>/<int:pk>/' ),
+    # Message API url endpoints
+    path('messages/<str:pkr>/',
+        v.ListCreateMessages,
+        name='message-list'
+    ), # pkr - pk of the room
 ]
 
 urlpatterns += router.urls
