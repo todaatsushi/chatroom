@@ -73,7 +73,7 @@ class ChatroomViewSet(viewsets.ViewSet):
 def ListCreateMessages(request, pkr):
     # Get relevant room
     room = get_object_or_404(Chatroom, pk=pkr)
-    
+
     if request.method == 'GET':
         messages = Message.objects.filter(chatroom=room)
         serializer = MessageSerializer(messages, many=True)
