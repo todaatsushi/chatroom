@@ -2,9 +2,12 @@ from django.contrib import admin
 from django.urls import path
 
 from rest_framework.routers import DefaultRouter
+from rest_framework.schemas import get_schema_view
 
 import rooms.views as v
 
+
+schema_view = get_schema_view(title="Chatroom API")
 
 router = DefaultRouter()
 router.register(
@@ -14,6 +17,7 @@ router.register(
 )
 
 urlpatterns = [
+    path('', schema_view, name='chatroom-schema'),
     # Message API url endpoints
     path('messages/<str:pkr>/',
         v.ListCreateMessages,
