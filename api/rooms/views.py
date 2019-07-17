@@ -25,12 +25,16 @@ class ChatroomViewSet(viewsets.ViewSet):
     # GET
     def list(self, request):
         rooms = Chatroom.objects.all()
-        serializer = ChatroomSerializer(rooms, many=True)
+        serializer = ChatroomSerializer(
+            rooms, many=True, context={'request': request}
+        )
         return Response(serializer.data)
 
     def retrieve(self, request, pk=None):
         room = get_object_or_404(Chatroom, pk=pk)
-        serializer = ChatroomSerializer(room)
+        serializer = ChatroomSerializer(
+            room, context={'request': request}
+        )
         return Response(serializer.data)
 
     # POST
@@ -64,7 +68,9 @@ class ChatroomViewSet(viewsets.ViewSet):
         room.delete()
 
         rooms = Chatroom.objects.all()
-        serializer = ChatroomSerializer(rooms, many=True)
+        serializer = ChatroomSerializer(
+            rooms, many=True, context={'request': request}
+        )
         return Response(serializer.data)
 
 
@@ -76,7 +82,10 @@ def ListCreateMessages(request, pkr):
 
     if request.method == 'GET':
         messages = Message.objects.filter(chatroom=room)
-        serializer = MessageSerializer(messages, many=True)
+        serializer = MessageSerializer(
+            # messages, many=True, context={'request': request}
+            messages, many=True, context={'request': request}
+        )
         return Response(serializer.data)
     
     if request.method == 'POST':
@@ -99,9 +108,9 @@ def ListCreateMessages(request, pkr):
 
 @api_view(['GET'])
 def RetrieveMessage(request, pk, pkr):
-    # Get relevant room
-    room = get_object_or_404(Chatroom, pk=pkr)
     message = get_object_or_404(Message, pk=pk)
-    serializer = MessageSerializer(message)
+    serializer = MessageSerializer(
+        # message, context={'request': request}
+        message, context={'request': request}
+    )
     return Response(serializer.data)
-
