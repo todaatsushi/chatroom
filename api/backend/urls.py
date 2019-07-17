@@ -7,7 +7,7 @@ from rest_framework.schemas import get_schema_view
 import rooms.views as v
 
 
-schema_view = get_schema_view(title="Chatroom API")
+# schema_view = get_schema_view(title="Chatroom API")
 
 router = DefaultRouter()
 router.register(
@@ -17,8 +17,9 @@ router.register(
 )
 
 urlpatterns = [
-    path('', schema_view, name='chatroom-schema'),
+    path('', v.root, name='chatroom-root'),
     # Message API url endpoints
+    path('messages/', v.ListAllMessages.as_view(), name='message-all'),
     path('messages/<str:pkr>/', v.ListCreateMessages, name='message-list'), # pkr - pk of the room
     path('messages/<str:pkr>/<int:pk>/', v.RetrieveMessage, name='message-detail'),
 ]

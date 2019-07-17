@@ -1,9 +1,10 @@
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 
-from rest_framework import permissions, viewsets
+from rest_framework import permissions, viewsets, generics
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from rest_framework.reverse import reverse
 
 from rooms.models import Chatroom, Message, _generate_hash
 from rooms.serializers import ChatroomSerializer, MessageSerializer
@@ -73,6 +74,16 @@ class ChatroomViewSet(viewsets.ViewSet):
         )
         return Response(serializer.data)
 
+
+# Api Root
+@api_view(['GET'])
+def root(request, format=None):
+    return Response({
+        'chatrooms': reverse(
+            'chatroom-list', request=request, format=format
+        ),
+        'messages': 'http://localhost:8000/{{room_hash}}/',
+    })
 
 ## MESSAGE VIEWS
 @api_view(['GET', 'POST'])
