@@ -96,3 +96,12 @@ def ListCreateMessages(request, pkr):
 
         serializer = MessageSerializer(message)
         return Response(serializer.data)
+
+@api_view(['GET'])
+def RetrieveMessage(request, pk, pkr):
+    # Get relevant room
+    room = get_object_or_404(Chatroom, pk=pkr)
+    message = get_object_or_404(Message, pk=pk)
+    serializer = MessageSerializer(message)
+    return Response(serializer.data)
+

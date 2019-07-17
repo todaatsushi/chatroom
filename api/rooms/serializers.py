@@ -6,7 +6,7 @@ class ChatroomSerializer(serializers.ModelSerializer):
     class Meta:
         model = Chatroom
         fields = [
-            'hash', 'name', 'created_at', 'last_posted',
+            'hash', 'name', 'created_at', 'last_posted'
         ]
 
 
@@ -14,5 +14,5 @@ class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
         fields = [
-            'chatroom', 'author', 'message', 'posted_at'
+            'id', 'chatroom', 'author', 'message', 'posted_at'
         ]
