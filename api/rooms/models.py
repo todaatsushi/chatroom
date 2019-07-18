@@ -22,7 +22,7 @@ class Chatroom(models.Model):
         return f'{self.name} - ({self.hash})'
 
     def get_messages(self):
-        return self.messages.objects.order_by('-posted_at')
+        return self.messages.order_by('-posted_at')
 
     def as_dict(self):
         return {
@@ -36,7 +36,8 @@ class Chatroom(models.Model):
 class Message(models.Model):
     chatroom = models.ForeignKey(
         'rooms.Chatroom',
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='messages'
     )
     author = models.CharField(max_length=50)
     message = models.TextField()
