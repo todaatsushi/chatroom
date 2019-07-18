@@ -6,7 +6,7 @@ class ChatroomSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Chatroom
         fields = [
-            'hash', 'name', 'created_at', 'last_posted', 'url',
+            'url', 'hash', 'name', 'created_at', 'last_posted',
         ]
 
 
