@@ -19,9 +19,9 @@ router.register(
 urlpatterns = [
     path('', v.root, name='chatroom-root'),
     # Message API url endpoints
-    path('messages/', v.ListAllMessages.as_view(), name='message-all'),
-    path('messages/<str:pkr>/', v.ListCreateMessages, name='message-list'), # pkr - pk of the room
-    path('messages/<str:pkr>/<int:pk>/', v.RetrieveMessage, name='message-detail'),
+    path('messages/<str:hash>/', v.ListCreateMessages,
+        name='message-list'), # pkr - pk of the room
+    path('messages/<str:hash>/<int:id>/', v.RetrieveMessage, name='message-detail'),
 ]
 
 urlpatterns += router.urls
