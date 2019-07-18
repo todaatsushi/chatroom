@@ -60,7 +60,9 @@ class ChatroomViewSet(viewsets.ViewSet):
             room.last_posted = request.data['last_posted']
 
         room.save()
-        serializer = ChatroomSerializer(room)
+        serializer = ChatroomSerializer(
+            room, context={'request': request}
+        )
         return Response(serializer.data)
 
     # DESTROY
@@ -87,9 +89,9 @@ def root(request, format=None):
 
 ## MESSAGE VIEWS
 @api_view(['GET', 'POST'])
-def ListCreateMessages(request, pkr):
+def ListCreateMessages(request, hash):
     # Get relevant room
-    room = get_object_or_404(Chatroom, pk=pkr)
+    room = get_object_or_404(Chatroom, pk=hash)
 
     if request.method == 'GET':
         messages = Message.objects.filter(chatroom=room)
@@ -114,12 +116,12 @@ def ListCreateMessages(request, pkr):
         room.last_posted = timezone.now()
         room.save()
 
-        serializer = MessageSerializer(message)
+        serializer = MessageSerializer(message, context={'request': request})
         return Response(serializer.data)
 
 @api_view(['GET'])
-def RetrieveMessage(request, pk, pkr):
-    message = get_object_or_404(Message, pk=pk)
+def RetrieveMessage(request, id, hash):
+    message = get_object_or_404(Message, pk=id)
     serializer = MessageSerializer(
         # message, context={'request': request}
         message, context={'request': request}
